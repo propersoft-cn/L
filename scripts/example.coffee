@@ -10,6 +10,9 @@
 
 module.exports = (robot) ->
 
+  robot.hear /who is l/i, (res) ->
+    res.send "https://en.wikipedia.org/wiki/L_(Death_Note)"
+
   # robot.hear /badger/i, (res) ->
   #   res.send "Badgers? BADGERS? WE DON'T NEED NO STINKIN BADGERS"
   #
