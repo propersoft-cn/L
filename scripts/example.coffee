@@ -68,6 +68,8 @@ module.exports = (robot) ->
       query104 res
     , 15000
 
+  lastMsg = ''
+
   query104 = (msg) ->
     msg.http('http://221.180.145.86/bus/station/pass?sid=ce6b38f682e8833c2a9074bb9df7716b')
       .get() (err, res, body) ->
@@ -76,10 +78,16 @@ module.exports = (robot) ->
         for row in rows
           if '3055e509475fb9d97bb55c55' == row.rid
             if row.bus
-              msg.send '#' + row.bus.busId + ' ' + row.name + ' 还有 ' + row.bus.distance + ' 米到站，大约 ' + row.bus.cost + ' 分钟'
+              curMsg = '#' + row.bus.busId + ' ' + row.name + ' 还有 ' + row.bus.distance + ' 米到站，大约 ' + row.bus.cost + ' 分钟'
+              if curMsg != lastMsg
+                msg.send curMsg
+                lastMsg = curMsg
               break
             else if row.busDetail
-              msg.send row.name + ' ' + row.busDetail.numStr
+              curMsg = row.name + ' ' + row.busDetail.numStr
+              if curMsg != lastMsg
+                msg.send curMsg
+                lastMsg = curMsg
               break
 
   robot.respond /home/, (res) ->
