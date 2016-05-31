@@ -55,27 +55,39 @@ module.exports = (robot) ->
   #   setTimeout () ->
   #     res.send "Who you calling 'slow'?"
   #   , 60 * 1000
-  #
-  # annoyIntervalId = null
-  #
-  # robot.respond /annoy me/, (res) ->
-  #   if annoyIntervalId
-  #     res.send "AAAAAAAAAAAEEEEEEEEEEEEEEEEEEEEEEEEIIIIIIIIHHHHHHHHHH"
-  #     return
-  #
-  #   res.send "Hey, want to hear the most annoying sound in the world?"
-  #   annoyIntervalId = setInterval () ->
-  #     res.send "AAAAAAAAAAAEEEEEEEEEEEEEEEEEEEEEEEEIIIIIIIIHHHHHHHHHH"
-  #   , 1000
-  #
-  # robot.respond /unannoy me/, (res) ->
-  #   if annoyIntervalId
-  #     res.send "GUYS, GUYS, GUYS!"
-  #     clearInterval(annoyIntervalId)
-  #     annoyIntervalId = null
-  #   else
-  #     res.send "Not annoying you right now, am I?"
-  #
+
+  busIntervalId = null
+
+  robot.respond /104/, (res) ->
+    if busIntervalId
+      query104 res
+      return
+
+    res.send "Hey, 开始帮您查询 104 公交到站信息"
+    busIntervalId = setInterval () ->
+      query104 res
+    , 15000
+
+  query104 = (msg) ->
+    msg.http('http://221.180.145.86/bus/station/pass?sid=ce6b38f682e8833c2a9074bb9df7716b')
+      .get() (err, res, body) ->
+        response = JSON.parse(body)
+        rows = response.rows
+        for row in rows
+          if '3055e509475fb9d97bb55c55' == row.rid
+            if row.bus
+              msg.send '#' + row.bus.busId + ' ' + row.name + ' 还有 ' + row.bus.distance + ' 米到站，大约 ' + row.bus.cost + ' 分钟'
+              break
+            else if row.busDetail
+              msg.send row.name + ' ' + row.busDetail.numStr
+              break
+
+  robot.respond /home/, (res) ->
+    if busIntervalId
+      res.send "Good bye!"
+      clearInterval(busIntervalId)
+      busIntervalId = null
+
   #
   # robot.router.post '/hubot/chatsecrets/:room', (req, res) ->
   #   room   = req.params.room
