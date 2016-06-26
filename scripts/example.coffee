@@ -34,7 +34,7 @@ module.exports = (robot) ->
   # robot.topic (res) ->
   #   res.send "#{res.message.text}? That's a Paddlin'"
   #
-  
+
   enterReplies = ['Hi', 'Target Acquired', 'Firing', 'Hello friend.', 'Gotcha', 'I see you']
   leaveReplies = ['Are you still there?', 'Target lost', 'Searching']
 
@@ -55,47 +55,6 @@ module.exports = (robot) ->
   #   setTimeout () ->
   #     res.send "Who you calling 'slow'?"
   #   , 60 * 1000
-
-  busIntervalId = null
-
-  robot.respond /104/, (res) ->
-    if busIntervalId
-      query104 res
-      return
-
-    res.send "Hey, 开始帮您查询 104 公交到站信息"
-    busIntervalId = setInterval () ->
-      query104 res
-    , 15000
-
-  lastMsg = ''
-
-  query104 = (msg) ->
-    msg.http('http://221.180.145.86/bus/station/pass?sid=ce6b38f682e8833c2a9074bb9df7716b')
-      .get() (err, res, body) ->
-        response = JSON.parse(body)
-        rows = response.rows
-        for row in rows
-          if '3055e509475fb9d97bb55c55' == row.rid
-            if row.bus
-              curMsg = '#' + row.bus.busId + ' ' + row.name + ' 还有 ' + row.bus.distance + ' 米到站，大约 ' + row.bus.cost + ' 分钟'
-              if curMsg != lastMsg
-                msg.send curMsg
-                lastMsg = curMsg
-              break
-            else if row.busDetail
-              curMsg = row.name + ' ' + row.busDetail.numStr
-              if curMsg != lastMsg
-                msg.send curMsg
-                lastMsg = curMsg
-              break
-
-  robot.respond /home/, (res) ->
-    if busIntervalId
-      res.send "Good bye!"
-      clearInterval(busIntervalId)
-      busIntervalId = null
-
   #
   # robot.router.post '/hubot/chatsecrets/:room', (req, res) ->
   #   room   = req.params.room
