@@ -1,28 +1,32 @@
 module.exports = (robot) ->
 
   busIntervalId = null
-
-  robot.respond /104/, (res) ->
-    if busIntervalId
-      res.send '正在查询 104 公交到站信息...'
-      query104 res
-      return
-
-    res.send "Hey, 开始帮您查询 104 公交到站信息"
-    busIntervalId = setInterval () ->
-      query104 res
-    , 15000
-
   lastMsg = ''
 
-  query104 = (msg) ->
+  robot.respond /104 wj/, (res) ->
+    str = '查询 104 路卫工街建设大路到站信息...'
+    sid = 'ce6b38f682e8833c2a9074bb9df7716b'
+    query res, 104, sid, str
+
+  query = (res, busNo, sid, str) ->
+    if busIntervalId
+      res.send '正在' + str
+      queryPass res, busNo, sid
+      return
+
+    res.send "Hey, 开始帮您" + str
+    busIntervalId = setInterval () ->
+      queryPass res, busNo, sid
+    , 15000
+
+  queryPass = (msg, busNo, sid) ->
     curMsg = ''
-    msg.http('http://221.180.145.86/bus/station/pass?sid=ce6b38f682e8833c2a9074bb9df7716b')
+    msg.http('http://221.180.145.86/bus/station/pass?sid=' + sid)
       .get() (err, res, body) ->
         response = JSON.parse(body)
         rows = response.rows
         for row in rows
-          if '3055e509475fb9d97bb55c55' == row.rid || '4eb64358753c55b64d776efc' == row.rid
+          if row.name.startsWith(busNo+'')
             if row.bus
               curMsg += '#' + row.bus.busId + ' ' + row.name + ' 还有 ' + row.bus.distance + ' 米到站，大约 ' + row.bus.cost + ' 分钟\r\n'
             else if row.busDetail
@@ -30,6 +34,31 @@ module.exports = (robot) ->
         if curMsg != lastMsg
           msg.send curMsg
           lastMsg = curMsg
+
+  robot.respond /117 sj/, (res) ->
+    str = '查询 117 路卫工街建设大路到站信息...'
+    sid = '6af058e4359cea9922cfb36fbaff4223'
+    query res, 117, sid, str
+
+  robot.respond /252 sb/, (res) ->
+    str = '查询 252 路诗波特小区到站信息...'
+    sid = '5bb9cc9123f0f245149d06f104c31daa'
+    query res, 252, sid, str
+
+  robot.respond /257 sb/, (res) ->
+    str = '查询 257 路诗波特小区到站信息...'
+    sid = '5bb9cc9123f0f245149d06f104c31daa'
+    query res, 257, sid, str
+
+  robot.respond /239 jb/, (res) ->
+    str = '查询 239 路诗波特小区到站信息...'
+    sid = 'd9ff11b89ae802bb0c14040ba6fe83b0'
+    query res, 239, sid, str
+
+  robot.respond /135 jb/, (res) ->
+    str = '查询 135 路诗波特小区到站信息...'
+    sid = 'd9ff11b89ae802bb0c14040ba6fe83b0'
+    query res, 135, sid, str
 
   robot.respond /home/, (res) ->
     if busIntervalId
