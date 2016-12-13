@@ -62,6 +62,7 @@ module.exports = (robot) ->
     from = []
     for sender in mail.from
       from.push "#{sender.name} <#{sender.address}>"
+      robot.logger.info "hubot-mail-notifier receives an email from #{sender.address}"
 
     date = moment mail.headers.date, 'ddd, D MMM YYYY HH:mm:ss Z', 'en'
 
