@@ -36,7 +36,7 @@ module.exports = (robot) ->
           lastMsg = curMsg
 
   robot.respond /117 sj/, (res) ->
-    str = '查询 117 路卫工街建设大路到站信息...'
+    str = '查询 117 路盛京医院南湖院区到站信息...'
     sid = '6af058e4359cea9922cfb36fbaff4223'
     query res, 117, sid, str
 
@@ -51,12 +51,12 @@ module.exports = (robot) ->
     query res, 257, sid, str
 
   robot.respond /239 jb/, (res) ->
-    str = '查询 239 路诗波特小区到站信息...'
+    str = '查询 239 路建设大路保工街到站信息...'
     sid = 'd9ff11b89ae802bb0c14040ba6fe83b0'
     query res, 239, sid, str
 
   robot.respond /135 jb/, (res) ->
-    str = '查询 135 路诗波特小区到站信息...'
+    str = '查询 135 路建设大路保工街到站信息...'
     sid = 'd9ff11b89ae802bb0c14040ba6fe83b0'
     query res, 135, sid, str
 
