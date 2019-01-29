@@ -4,7 +4,7 @@ brain:
     - ./l-brain:/data
   command: redis-server --appendonly yes
 bot:
-  image: propersoft/l
+  image: propersoft/hubot-l
   volumes:
     - ./l-bot:/var/log
   links:
