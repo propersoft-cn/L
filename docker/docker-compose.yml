@@ -1,0 +1,15 @@
+brain:
+  image: redis
+  volumes:
+    - ./l-brain:/data
+  command: redis-server --appendonly yes
+bot:
+  image: propersoft/l
+  volumes:
+    - ./l-bot:/var/log
+  links:
+    - brain
+  environment:
+    - REDIS_URL=redis://brain:6379/l
+    - HUBOT_SLACK_EXIT_ON_DISCONNECT=true
+    - HUBOT_SLACK_TOKEN
