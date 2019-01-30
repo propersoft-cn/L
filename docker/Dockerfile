@@ -16,4 +16,4 @@ WORKDIR /home/L
 RUN npm install
 
 COPY docker/l.conf /etc/supervisor/conf.d/l.conf
-CMD supervisord -c /etc/supervisor/conf.d/l.conf
+#CMD supervisord -c /etc/supervisor/conf.d/l.conf
