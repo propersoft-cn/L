@@ -7,9 +7,11 @@ bot:
   image: propersoft/hubot-l
   volumes:
     - ./l-bot:/var/log
+    - ./entrypoint.sh:/entrypoint.sh
   links:
     - brain
   environment:
     - REDIS_URL=redis://brain:6379/l
     - HUBOT_SLACK_EXIT_ON_DISCONNECT=true
     - HUBOT_SLACK_TOKEN
+  entrypoint: /entrypoint.sh
