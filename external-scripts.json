@@ -1,5 +1,6 @@
 [
   "hubot-diagnostics",
+  "hubot-explainshell",
   "hubot-help",
   "hubot-google-images",
   "hubot-google-translate",
