@@ -48,9 +48,9 @@ module.exports = (robot) ->
            msg.send "Something's gone awry"
          element = msg.match[1]
          if element == "HN.top"
-           idx = 0
+           idx = 1
          else
-           idx = (Number) msg.match[0].replace(/[^0-9]/g, '') - 1
+           idx = (Number) msg.match[0].replace(/[^0-9]/g, '')
          try
            item = feed.getItems()[idx]
            msg.send item.getTitle() + ": " + item.getPermalink() + " (" + item.getComments()?.html + ")"
