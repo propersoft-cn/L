@@ -17,9 +17,10 @@ module.exports = (robot) ->
 
 
   blankArr = []
-  robot.hear /lot +(.*)/i, (res) ->
+  robot.hear /lot \+(.*)/i, (res) ->
     str = res.match[1]
     st2 = str.slice(1)
     blankArr.push(st2.split(','))
     console.log(blankArr)
     res.send res.random(res.random(blankArr))
+
