@@ -10,24 +10,31 @@
 # Commands:
 #   hubot lot - lot from candidates
 
+candidates = []
+
 module.exports = (robot) ->
   robot.respond /lot$/i, (msg) ->
-    candidates = ['张剑林', '王浩鹏', '王怡', '寇鑫', '张磊', '方明', '王维', '张永彬', '邓广义', '李亚楠', '邢静', '付伟', '祝晓宇', '冯艳玲']
     msg.send msg.random candidates
 
-  # L lot + 张三, 李四
-  blankArr = []
-  robot.hear /lot \+(.*)/i, (res) ->
+  robot.respond /lot ls$/i, (msg) ->
+    msg.send candidates.toString().replace(/,$/gi,"")
+
+
+  robot.hear /lot \+ (.*)/i, (res) ->
     str = res.match[1]
-    st2 = str.slice(1)
-    blankArr.push(st2.split(','))
-    console.log(blankArr)
-    res.send res.random(res.random(blankArr))
+    if str.length > 4
+       arr = []
+       arr = str.split(/[,，]/)
+       candidates = arr + "," + candidates
+    else str.length <
+       candidates.push(str.replace(/,$/gi,""))
+    candidates = candidates.toString().split(/[,，]/)
+    res.send res.random(candidates)
+
 
   robot.hear /lot \-(.*)/i, (res) ->
     st123 = res.match[1]
-    console.log(blankArr)
-#    blankArr.pop st123 for arr in blankArr when arr is st123
-#    console.log(blankArr)
-    blankArr.pop(st123)
-    res.send res.random(blankArr)
+    for str in candidates
+      if str is st123
+        candidates = candidates.splice(str, 1)
+    res.send res.random(candidates)
