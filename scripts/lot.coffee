@@ -28,13 +28,12 @@ module.exports = (robot) ->
        candidates = arr + "," + candidates
     else str.length <
        candidates.push(str.replace(/,$/gi,""))
-    candidates = candidates.toString().split(/[,，]/)
+    candidates = candidates.split(/[,，]/)
     res.send res.random(candidates)
 
 
-  robot.hear /lot \-(.*)/i, (res) ->
-    st123 = res.match[1]
-    for str in candidates
-      if str is st123
-        candidates = candidates.splice(str, 1)
+  robot.hear /lot \- (.*)/i, (res) ->
+    st123 = res.match[1].replace(/\s/g, "").split(/[,，]/)
+    for str in st123
+      candidates.splice(candidates.indexOf(str), 1)
     res.send res.random(candidates)
