@@ -17,23 +17,23 @@ module.exports = (robot) ->
     msg.send msg.random candidates
 
   robot.respond /lot ls$/i, (msg) ->
-    msg.send candidates.toString().replace(/,$/gi,"")
+    msg.send candidates
 
 
   robot.hear /lot \+ (.*)/i, (res) ->
-    str = res.match[1].replace(/\s/g, "")
-    if str.length > 4
+    elements = res.match[1].replace(/\s/g, "")
+    if elements.length > 4
        arr = []
-       arr = str.split(/[,，]/)
+       arr = elements.split(/[,，]/)
        candidates = arr + candidates
-    else str.length <
-       candidates.push(str.replace(/,$/gi,""))
+    else elements.length <
+       candidates.push(elements.replace(/,$/gi,""))
     candidates = candidates.toString().split(/[,，]/)
     res.send res.random(candidates)
 
 
   robot.hear /lot \- (.*)/i, (res) ->
-    st123 = res.match[1].replace(/\s/g, "").split(/[,，]/)
-    for str in st123
+    removeElements = res.match[1].replace(/\s/g, "").split(/[,，]/)
+    for str in removeElements
       candidates.splice(candidates.indexOf(str), 1)
     res.send res.random(candidates)
