@@ -25,7 +25,10 @@ module.exports = (robot) ->
     if elements.length > 4
        arr = []
        arr = elements.split(/[,，]/)
-       candidates = arr + candidates
+       if candidates.length > 0
+         candidates = candidates + ',' + arr
+       else  candidates.length <
+         candidates = arr
     else elements.length <
        candidates.push(elements.replace(/,$/gi,""))
     candidates = candidates.toString().split(/[,，]/)
