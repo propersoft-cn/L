@@ -21,14 +21,14 @@ module.exports = (robot) ->
 
 
   robot.hear /lot \+ (.*)/i, (res) ->
-    str = res.match[1]
+    str = res.match[1].replace(/\s/g, "")
     if str.length > 4
        arr = []
        arr = str.split(/[,，]/)
-       candidates = arr + "," + candidates
+       candidates = arr + candidates
     else str.length <
        candidates.push(str.replace(/,$/gi,""))
-    candidates = candidates.split(/[,，]/)
+    candidates = candidates.toString().split(/[,，]/)
     res.send res.random(candidates)
 
 
