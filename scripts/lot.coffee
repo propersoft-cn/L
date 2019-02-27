@@ -38,5 +38,7 @@ module.exports = (robot) ->
   robot.hear /lot \- (.*)/i, (res) ->
     removeElements = res.match[1].replace(/\s/g, "").split(/[,，]/)
     for str in removeElements
-      candidates.splice(candidates.indexOf(str), 1)
-    res.send res.random(candidates)
+      if candidates.indexOf(str) isnt -1
+        candidates.splice(candidates.indexOf(str), 1)
+      else res.send str + "is not exist !"
+    res.send candidates
