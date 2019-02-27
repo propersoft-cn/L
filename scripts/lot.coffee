@@ -17,7 +17,9 @@ module.exports = (robot) ->
     msg.send msg.random candidates
 
   robot.respond /lot ls$/i, (msg) ->
-    msg.send candidates
+    if candidates.length is 0
+      msg.send "Empty collection!"
+    else msg.send candidates
 
 
   robot.hear /lot \+ (.*)/i, (res) ->
