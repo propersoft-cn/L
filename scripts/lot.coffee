@@ -32,7 +32,7 @@ module.exports = (robot) ->
     else elements.length <
        candidates.push(elements.replace(/,$/gi,""))
     candidates = candidates.toString().split(/[,，]/)
-    res.send res.random(candidates)
+    res.send candidates
 
 
   robot.hear /lot \- (.*)/i, (res) ->
