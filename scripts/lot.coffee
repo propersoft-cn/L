@@ -36,7 +36,11 @@ module.exports = (robot) ->
     else elements.length <
        candidates.push(elements.replace(/,$/gi,""))
     candidates = candidates.toString().split(/[,，]/)
+    for aaa in candidates.toString().split(/[,，]/)
+      if aaa.length is 0
+        candidates.splice(candidates.indexOf(aaa), 1)
     res.send candidates
+
 
 
   robot.hear /lot \- (.*)/i, (res) ->
