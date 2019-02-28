@@ -25,20 +25,12 @@ module.exports = (robot) ->
 
 
   robot.hear /lot \+ (.*)/i, (res) ->
-    elements = res.match[1].replace(/\s/g, "")
-    if elements.length > 4
-       arr = []
-       arr = elements.split(/[,，]/)
-       if candidates.length > 0
-         candidates = candidates + ',' + arr
-       else  candidates.length <
-         candidates = arr
-    else elements.length <
-       candidates.push(elements.replace(/,$/gi,""))
-    candidates = candidates.toString().split(/[,，]/)
-    for aaa in candidates.toString().split(/[,，]/)
-      if aaa.length is 0
-        candidates.splice(candidates.indexOf(aaa), 1)
+    elements = res.match[1].replace(/\s/g, "").split(/[,，]/)
+    for str in elements
+      if str.length > 0
+        if candidates.includes(str)
+          candidates.splice(candidates.indexOf(str), 1)
+        candidates.push(str)
     res.send candidates
 
 
@@ -48,5 +40,5 @@ module.exports = (robot) ->
     for str in removeElements
       if candidates.indexOf(str) isnt -1
         candidates.splice(candidates.indexOf(str), 1)
-      else res.send str + "is not exist!"
+      else res.send str + " is not exist!"
     res.send candidates
