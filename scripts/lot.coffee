@@ -11,6 +11,38 @@
 #   hubot lot - lot from candidates
 
 module.exports = (robot) ->
-  robot.respond /lot/i, (msg) ->
-    candidates = ['张剑林', '王浩鹏', '王怡', '寇鑫', '张磊', '方明', '王维', '张永彬', '邓广义', '李亚楠', '邢静', '付伟', '祝晓宇', '冯艳玲']
-    msg.send msg.random candidates
+  if (robot.brain.get 'candidates') is null
+     candidates = []
+  else robot.brain.get 'candidates'
+
+  robot.respond /lot$/i, (msg) ->
+    if candidates.length is 0
+      msg.send "You need to add data to the collection!"
+    else msg.send msg.random candidates
+
+  robot.respond /lot ls$/i, (msg) ->
+    if (robot.brain.get 'candidates') isnt null
+      msg.send candidates = robot.brain.get 'candidates'
+    else msg.send "Empty collection!"
+
+  robot.hear /lot \+ (.*)/i, (res) ->
+    elements = res.match[1].replace(/\s/g, "").split(/[,，]/)
+    for str in elements
+      if str.length > 0
+        if candidates.includes(str)
+          candidates.splice(candidates.indexOf(str), 1)
+        candidates.push(str)
+    res.send candidates
+    robot.brain.set('candidates', candidates)
+    robot.brain.save()
+
+
+  robot.hear /lot \- (.*)/i, (res) ->
+    removeElements = res.match[1].replace(/\s/g, "").split(/[,，]/)
+    for str in removeElements
+      if candidates.indexOf(str) isnt -1
+        candidates.splice(candidates.indexOf(str), 1)
+      else res.send str + " is not exist!"
+    res.send candidates
+    robot.brain.set('candidates', candidates)
+    robot.brain.save()
