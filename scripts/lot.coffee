@@ -9,6 +9,9 @@
 #
 # Commands:
 #   hubot lot - lot from candidates
+#   hubot lot + - add to candidates
+#   hubot lot - - remove elements from candidates
+#   hubot lot ls - show candidates elements
 
 module.exports = (robot) ->
   if (robot.brain.get 'candidates') is null
