@@ -36,9 +36,9 @@ module.exports = (robot) ->
         if candidates.includes(str)
           candidates.splice(candidates.indexOf(str), 1)
         candidates.push(str)
-    res.send candidates
     robot.brain.set('candidates', candidates)
     robot.brain.save()
+    res.send candidates
 
 
   robot.hear /lot \- (.*)/i, (res) ->
@@ -47,6 +47,6 @@ module.exports = (robot) ->
       if candidates.indexOf(str) isnt -1
         candidates.splice(candidates.indexOf(str), 1)
       else res.send str + " is not exist!"
-    res.send candidates
     robot.brain.set('candidates', candidates)
     robot.brain.save()
+    res.send candidates
