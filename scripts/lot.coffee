@@ -30,6 +30,9 @@ module.exports = (robot) ->
     else msg.send "Empty collection!"
 
   robot.hear /lot \+ (.*)/i, (res) ->
+    if (robot.brain.get 'candidates') is null
+      candidates = []
+    else candidates = robot.brain.get 'candidates'
     elements = res.match[1].replace(/\s/g, "").split(/[,，]/)
     for str in elements
       if str.length > 0
@@ -38,7 +41,7 @@ module.exports = (robot) ->
         candidates.push(str)
     robot.brain.set('candidates', candidates)
     robot.brain.save()
-    res.send candidates
+    res.reply candidates
 
 
   robot.hear /lot \- (.*)/i, (res) ->
@@ -49,4 +52,4 @@ module.exports = (robot) ->
       else res.send str + " is not exist!"
     robot.brain.set('candidates', candidates)
     robot.brain.save()
-    res.send candidates
+    res.reply candidates
