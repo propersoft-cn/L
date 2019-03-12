@@ -50,6 +50,8 @@ module.exports = (robot) ->
       if candidates.indexOf(str) isnt -1
         candidates.splice(candidates.indexOf(str), 1)
       else res.send str + " is not exist!"
+    if candidates.length is 0
+      res.send "Empty collection!"
+    else res.reply candidates
     robot.brain.set('candidates', candidates)
     robot.brain.save()
-    res.reply candidates
