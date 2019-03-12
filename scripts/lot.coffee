@@ -25,7 +25,8 @@ module.exports = (robot) ->
 
   robot.respond /lot ls$/i, (msg) ->
     if (robot.brain.get 'candidates') isnt null
-      msg.send candidates = robot.brain.get 'candidates'
+      candidates = robot.brain.get 'candidates'
+      msg.send candidates
     else msg.send "Empty collection!"
 
   robot.hear /lot \+ (.*)/i, (res) ->
