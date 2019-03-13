@@ -12,6 +12,7 @@
 #   hubot lot + - add to candidates
 #   hubot lot - - remove elements from candidates
 #   hubot lot ls - show candidates elements
+#   hubot lot clear - show candidates elements
 
 module.exports = (robot) ->
   if (robot.brain.get 'candidates') is null
@@ -24,10 +25,11 @@ module.exports = (robot) ->
     else msg.send msg.random candidates
 
   robot.respond /lot ls$/i, (msg) ->
-    if (robot.brain.get 'candidates') isnt null
-      candidates = robot.brain.get 'candidates'
+    candidate = robot.brain.get 'candidates'
+    if candidate isnt null && candidate.length isnt 0
+      candidates = candidate
       msg.reply candidates
-    else msg.send "Empty collection!"
+    else msg.reply "Empty collection!"
 
   robot.hear /lot \+ (.*)/i, (res) ->
     if (robot.brain.get 'candidates') is null
@@ -55,3 +57,10 @@ module.exports = (robot) ->
     else res.reply candidates
     robot.brain.set('candidates', candidates)
     robot.brain.save()
+
+  robot.respond /lot clear$/i, (msg) ->
+    candidates = robot.brain.get 'candidates'
+    for str in candidates
+      candidates.splice(str)
+    robot.brain.save()
+    msg.reply "It's blank candidates of brains！"
