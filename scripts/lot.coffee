@@ -12,7 +12,7 @@
 #   hubot lot + - add to candidates
 #   hubot lot - - remove elements from candidates
 #   hubot lot ls - show candidates elements
-#   hubot lot clear - show candidates elements
+#   hubot lot delAll - delete brains candidates elements
 
 module.exports = (robot) ->
   if (robot.brain.get 'candidates') is null
@@ -59,7 +59,7 @@ module.exports = (robot) ->
     robot.brain.set('candidates', candidates)
     robot.brain.save()
 
-  robot.respond /lot clear$/i, (msg) ->
+  robot.respond /lot delAll/i, (msg) ->
     candidates = robot.brain.get 'candidates'
     for str in candidates
       candidates.splice(str)
