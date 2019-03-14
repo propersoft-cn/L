@@ -20,6 +20,7 @@ module.exports = (robot) ->
   else robot.brain.get 'candidates'
 
   robot.respond /lot$/i, (msg) ->
+    candidates = robot.brain.get 'candidates'
     if candidates.length is 0
       msg.send "You need to add data to the collection!"
     else msg.send msg.random candidates
